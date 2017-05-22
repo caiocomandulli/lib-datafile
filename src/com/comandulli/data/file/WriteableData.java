@@ -50,13 +50,9 @@ public class WriteableData extends Data {
 	}
 
 	private FileHeader allocateFile(String key, int dataLength) throws IOException {
-		FileHeader newEntry = null;
-		if (newEntry == null) {
-			long fp = accessDataFile.length();
-			accessDataFile.setLength(fp + dataLength);
-			newEntry = new FileHeader(fp, dataLength);
-		}
-		return newEntry;
+		long fp = accessDataFile.length();
+		accessDataFile.setLength(fp + dataLength);
+		return new FileHeader(fp, dataLength);
 	}
 
 	private void writeFileData(FileHeader header, WriteableFile rw) throws IOException, DataFileException {
@@ -69,13 +65,10 @@ public class WriteableData extends Data {
 	}
 
 	private void addEntryToIndex(String key, FileHeader newRecord, int currentIndex) throws IOException, DataFileException {
-		// byte[] keyBytes = key.getBytes();
-		// if (keyBytes.length > MAX_KEY_LENGTH) {
-		// throw new DataFileException("Key of " + key.getBytes().length +
-		// " is larger than allowed size of " + MAX_KEY_LENGTH + " bytes");
-		// }
 		ByteArrayOutputStream temp = new ByteArrayOutputStream(MAX_KEY_LENGTH);
-		(new DataOutputStream(temp)).writeUTF(key);
+		DataOutputStream dos = new DataOutputStream(temp);
+		dos.writeUTF(key);
+		dos.close();	
 		if (temp.size() > MAX_KEY_LENGTH) {
 			throw new DataFileException("Key is larger than permitted size of " + MAX_KEY_LENGTH + " bytes");
 		}
