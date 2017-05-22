@@ -74,4 +74,8 @@ public class ReadableData extends Data {
 		return buf;
 	}
 	
+	public FileHeader getFileHeader(String key) {
+		return memIndex.get(key);
+	}
+	
 }
