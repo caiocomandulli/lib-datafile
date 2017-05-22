@@ -35,6 +35,14 @@ public class FileHeader {
 	public int getDataCapacity() {
 		return dataCapacity;
 	}
+	
+	public long getDataPosition() {
+		return dataPointer;
+	}
+
+	public int getDataLength() {
+		return dataCount;
+	}
 
 	protected int getFreeSpace() {
 		return dataCapacity - dataCount;
