@@ -87,5 +87,20 @@ public class WriteableData extends Data {
 		newRecord.write(accessDataFile);
 		newRecord.setIndexPosition(currentIndex);
 	}
+	
+	public static void GetDirectoryFiles(List<WriteableFile> writers, File directory, String parentKey) throws IOException {
+		if (directory.isDirectory() && directory.exists()) {
+			File[] children = directory.listFiles();
+			for (File child : children) {
+				if (child.isDirectory()) {
+					GetDirectoryFiles(writers, child, parentKey + "\\" + child.getName());
+				} else if (child.exists()) {
+					WriteableFile rw = new WriteableFile(parentKey + "\\" + child.getName());
+					rw.writeFile(child);
+					writers.add(rw);
+				}
+			}
+		}
+	}
 
 }
